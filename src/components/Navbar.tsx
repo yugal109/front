@@ -1,10 +1,12 @@
-import React from "react"
+import React,{useState,useEffect} from "react"
+import "../css/Navbar.css"
 
 const Navbar=()=>{
     return (
         <div>
-            This is me people.
+        this is kinda dope man.
         </div>
+    
     )
 
 }
