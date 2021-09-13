@@ -3,6 +3,7 @@ import { Avatar } from "@material-ui/core";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import NotificationsIcon from "@material-ui/icons";
+import axios from "../url"
 import NotificationComponent from "./NotificationComponent";
 import { useSelector } from "react-redux";
 import "../css/Navbar.scss";
@@ -16,11 +17,38 @@ interface userInfoDataStructure {
   password?: string;
 }
 const Navbar: React.FC = () => {
-  const history = useHistory();
+
   const data: userInfoDataStructure | any = useSelector<userInfoDataStructure>(
     (state: any) => state.userInfoState
   );
 
+  const [latestRoomId,setLatestRoomId]=useState<string>("")
+
+  
+  useEffect(()=>{
+    console.log()
+    if(data && data.token){
+      axios.get("/latest_room",{
+        headers:{
+          "x-auth-token":data.token
+        }
+      })
+      .then((response)=>{
+        // console.log(response.data)
+        setLatestRoomId(response.data._id)
+      }).catch((error)=>{
+        console.log(error)
+      })
+    }
+    
+  })
+
+  
+
+
+
+  const history = useHistory();
+ 
   const [showNotificationComponent, setShowNotificationComponent] =
     useState<boolean>(false);
 
@@ -46,6 +74,11 @@ const Navbar: React.FC = () => {
             </li>
             {data && data?.username ? (
               <>
+              <Link to={`/chat/${latestRoomId}`}>
+               <li>
+                  <i className="fa fa-comment icon"></i>
+                </li>
+                </Link>
                 <li>
                   <i onClick={handleLogout} className="fa fa-sign-out icon"></i>
                 </li>
