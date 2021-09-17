@@ -1,7 +1,8 @@
 import axios from "axios"
+import {URL} from "./urlActual"
 
 const Axios =axios.create({
-    baseURL:"https://voice101.herokuapp.com"
+    baseURL:URL
 })
 
 export default Axios

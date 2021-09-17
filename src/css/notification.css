@@ -1,0 +1,19 @@
+.notification_body{
+    border-bottom: 1px solid black;
+    padding:5px 0 5px 0;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.requestor_detail{
+    display: flex;
+    align-items: center;
+}
+
+.notification_body:hover{
+    color:white;
+    background-color: rgb(224, 219, 217);
+
+}

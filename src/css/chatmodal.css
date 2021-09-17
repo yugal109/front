@@ -1,0 +1,12 @@
+#transition-modal-title{
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    margin:5px 0 5px 0;
+    border-bottom: 1px solid black;
+}
+
+.body{
+    display:flex;
+    flex-direction: column;
+}

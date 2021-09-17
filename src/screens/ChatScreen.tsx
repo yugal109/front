@@ -9,11 +9,11 @@ const ChatScreen:React.FC<any> = ({match}) => {
   return (
     <div>
       <div className="cont clearfix">
-        <InboxList />
+        <InboxList  roomId={match.params.id} />
      
     {
       match.params.id !== "undefined" &&
-      <Chat/>
+      <Chat roomId={match.params.id} />
       
     }
         

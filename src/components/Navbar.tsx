@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Avatar } from "@material-ui/core";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import NotificationsIcon from "@material-ui/icons";
+import NotificationsIcon, { Chat } from "@material-ui/icons";
+import NotificationModal from "./NotificationModal";
 import axios from "../url"
 import NotificationComponent from "./NotificationComponent";
 import { useSelector } from "react-redux";
+import ChatModal from "./ChatModal";
+import SearchModal from "./SearchModal";
 import "../css/Navbar.scss";
 interface userInfoDataStructure {
   id: string;
@@ -35,16 +38,13 @@ const Navbar: React.FC = () => {
       })
       .then((response)=>{
         // console.log(response.data)
-        setLatestRoomId(response.data._id)
+        setLatestRoomId(response.data[0]?._id || "")
       }).catch((error)=>{
         console.log(error)
       })
     }
     
   })
-
-  
-
 
 
   const history = useHistory();
@@ -66,6 +66,8 @@ const Navbar: React.FC = () => {
     <>
       <nav>
         <div className="container">
+        
+
           <ul className="navbar-right">
             <li>
               <Link to="/">
@@ -74,6 +76,15 @@ const Navbar: React.FC = () => {
             </li>
             {data && data?.username ? (
               <>
+              <li>
+              <ChatModal/>
+                </li>
+                <li>
+              <SearchModal/>
+                </li>
+                <li>
+                  <NotificationModal/>
+                  </li>
               <Link to={`/chat/${latestRoomId}`}>
                <li>
                   <i className="fa fa-comment icon"></i>
@@ -82,9 +93,11 @@ const Navbar: React.FC = () => {
                 <li>
                   <i onClick={handleLogout} className="fa fa-sign-out icon"></i>
                 </li>
+                <Link to={`/profile/${data.id}`}>
                 <li>
                   <i className="fa fa-user icon"></i>
                 </li>
+                </Link>
               </>
             ) : (
               <>

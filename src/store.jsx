@@ -1,7 +1,11 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import { combineReducers } from "redux";
-import { loginReducer,userInfoReducer, registerReducer } from "./reducers/userReducer";
+import { loginReducer,userInfoReducer, registerReducer,usersInRoomReducer } from "./reducers/userReducer";
+import { chatReducer,chatRoomListReducer,chatRoomMessageReducer } from "./reducers/chatReducer";
+import { profileReducer } from "./reducers/profileReducer";
+import { notificationReducer } from "./reducers/notificationReducer";
+import { searchReducer } from "./reducers/searchReducer";
 // declare global {
 //   interface Window {
 //     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
@@ -26,7 +30,14 @@ const middleware = [thunk];
 const rootReducers = combineReducers({
   loginState: loginReducer,
   registerState: registerReducer,
-  userInfoState:userInfoReducer
+  userInfoState:userInfoReducer,
+  createRoomState:chatReducer,
+  chatRoomListState:chatRoomListReducer,
+  chatRoomMessageState:chatRoomMessageReducer,
+  profileDetailState:profileReducer,
+  usersInRoomState:usersInRoomReducer,
+  notificationsState:notificationReducer,
+  searchUsersState:searchReducer
 
 });
 
@@ -36,10 +47,12 @@ comments:[1,2,3]
 };
 
 
-const store = createStore(
+export const store = createStore(
   rootReducers,
   initailState,
   composeEnhancers(applyMiddleware(...middleware))
 );
 
-export default store;
+// export type RootState=ReturnType<typeof store.getState>
+
+

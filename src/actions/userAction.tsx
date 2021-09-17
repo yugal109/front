@@ -57,3 +57,19 @@ export const registerAction=(email:string,username:string,password:string,fullna
         dispatch({type:ERROR})
     })
 }
+
+
+export const usersInRoomAction=(roomId:string,token:string)=>(dispatch:any)=>{
+    dispatch({type:"USERS_IN_ROOM_START"})
+    axios.get(`/users_in_room/${roomId}`,{
+        headers:{
+            "x-auth-token":token
+        }
+    })
+    .then((response)=>{
+        dispatch({type:"USERS_IN_ROOM_LOADED",payload:response.data})
+        console.log(response.data)
+    }).catch((error)=>{
+        console.log(error)
+    })
+}

@@ -78,3 +78,16 @@ export const registerReducer = (
       return { ...state };
   }
 };
+
+
+export const usersInRoomReducer=(state:any={loading:false,users:[{_id:""}],admin:{},error:""},action:any)=>{
+  switch(action.type){
+    case "USERS_IN_ROOM_START":
+      return {...state,loading:true}
+    case 'USERS_IN_ROOM_LOADED':
+      return {...state,admin:action.payload.admin,users:action.payload.users}
+    default:
+      return {...state}
+  }
+
+}
