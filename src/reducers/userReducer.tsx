@@ -13,8 +13,13 @@ interface userInfoDataStructure {
 const userInfo: userInfoDataStructure =
   localStorage.getItem("userInfo") &&
   (JSON.parse(localStorage.getItem("userInfo")!) || null);
+
 export const userInfoReducer = (state = userInfo, action: any) => {
   switch (action.type) {
+    case "LOGGED_IN":
+      const userData=JSON.parse(localStorage.getItem("userInfo")!)
+      console.log(userData)
+      return userData
     default:
       return { ...state };
   }

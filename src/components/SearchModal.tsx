@@ -7,13 +7,14 @@ import { searchAction } from "../actions/searchAction";
 import Fade from "@material-ui/core/Fade";
 import { notiInterface } from "../interfaces/notificationInterface";
 import IndividualSearchListUsers from "./IndividualSearchListUsers";
+import { CircularProgress } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    height: 400,
+    // height: 400,
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
@@ -23,27 +24,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchModal: React.FC = () => {
+const SearchModal: React.FC<any> = ({ token }) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [search, setSearch] = React.useState<string>("");
+  // const [open, setOpen] = React.useState(false);
+  // const [search, setSearch] = React.useState<string>("");
 
   const dispatch = useDispatch();
-  const { loading, users, error }: any = useSelector<any>(
+  const { loading, search,users,open, error }: any = useSelector<any>(
     (state) => state.searchUsersState
   );
 
   const handleOpen = () => {
-    setOpen(true);
+    dispatch({type:"OPEN_SEARCH_MODAL"})
   };
 
   const handleClose = () => {
-    setOpen(false);
+    dispatch({type:"CLOSE_SEARCH_MODAL"})
   };
 
   const handelSearchUser = (e: any) => {
     e.preventDefault();
-    dispatch(searchAction());
+    dispatch(searchAction(search, token));
   };
 
   return (
@@ -69,18 +70,25 @@ const SearchModal: React.FC = () => {
             <form onSubmit={handelSearchUser} className="login-form">
               <input
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => dispatch({type:"SET_SEARCH",payload:e.target.value})}
                 type="text"
                 placeholder="Search"
               />
 
-              <button className="but">Search</button>
+              <button className="but">
+                {loading ? (
+                  <CircularProgress style={{ color: "white" }} size={15} />
+                ) : (
+                  "Search"
+                )}
+              </button>
             </form>
-            <IndividualSearchListUsers />
+           
 
             {users &&
-              users.map((user: notiInterface) =>
-               <IndividualSearchListUsers key={user._id} />)}
+              users.map((user: notiInterface) => (
+                <IndividualSearchListUsers key={user._id} user={user} />
+              ))}
           </div>
         </Fade>
       </Modal>

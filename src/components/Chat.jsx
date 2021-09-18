@@ -4,6 +4,7 @@ import { chatRoomMessage, chatRoomSendMessage } from "../actions/chatAction";
 import MyMessage from "./MyMessage";
 import OtherMessage from "./OtherMessage";
 import UsersInRoomModal from "./UsersInRoomModal";
+import InviteUsersModal from "./InviteUsersModal";
 import { URL } from "../urlActual";
 import { io } from "socket.io-client";
 
@@ -31,24 +32,19 @@ const Chat = ({ roomId }) => {
   );
 
   const handleMessageSend = (e) => {
-
-    e.preventDefault(); 
+    e.preventDefault();
 
     socket.emit("messageSend", { message, userId, room: roomId });
     setMessage("");
 
     socket.on("sentMessage", ({ msg }) => {
-      console.log("The message is ", msg);  
-      
-      dispatch(chatRoomSendMessage(msg))
-      // messages.push({msg})
+      console.log("The message is ", msg);
 
+      dispatch(chatRoomSendMessage(msg));
+      // messages.push({msg})
     });
 
     // socket.removeAllListeners("sentMessage")
-
-
-    
   };
 
   return (
@@ -63,8 +59,13 @@ const Chat = ({ roomId }) => {
           <div className="chat-with">Chat with Sohail Khan</div>
           <div className="chat-num-messages">already 1 902 messages</div>
         </div>
-       
-        <UsersInRoomModal roomId={roomId} token={token} />
+        <div>
+          {/* <InviteUsersModal /> */}
+          <div style={{display:"flex",justifyContent:"flex-end",alignItems:"center"}}>
+          <UsersInRoomModal roomId={roomId} token={token}  />
+          <InviteUsersModal token={token} userId={userId} roomId={roomId} />
+          </div>
+        </div>
       </div>
       <div className="chat-history">
         {loading ? (

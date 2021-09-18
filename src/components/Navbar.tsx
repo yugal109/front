@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
         }
       })
       .then((response)=>{
-        // console.log(response.data)
+        console.log(response.data)
         setLatestRoomId(response.data[0]?._id || "")
       }).catch((error)=>{
         console.log(error)
@@ -80,7 +80,7 @@ const Navbar: React.FC = () => {
               <ChatModal/>
                 </li>
                 <li>
-              <SearchModal/>
+              <SearchModal token={data.token}/>
                 </li>
                 <li>
                   <NotificationModal/>

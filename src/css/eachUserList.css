@@ -1,0 +1,31 @@
+.each_user{
+    padding-top:8px;
+    padding-bottom:8px ;
+    /* margin:10px 0 10px 0 ; */
+    border-bottom: 1px solid black;
+}
+
+.each_invite_user{
+    padding-top:8px;
+    padding-bottom:8px ;
+    /* margin:10px 0 10px 0 ; */
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button_invite{
+    background-color: rgb(14, 174, 185);
+    color:white;
+    font-weight: 800;
+    margin:0 5px 0 5px;
+    padding:2px 5px 2px 5px;
+    border-color: white;
+    width:5rem
+    
+}
+
+.button_invite:hover{
+    cursor: pointer;
+}

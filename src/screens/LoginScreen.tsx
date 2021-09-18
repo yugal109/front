@@ -5,6 +5,7 @@ import GoogleLogin from "react-google-login";
 // import loginDispatch from "../actions/loginDispatch";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from "../components/Spinner";
+import { CircularProgress } from "@material-ui/core";
 import "../css/Login.css";
 
 interface loginScreenInterface {
@@ -49,7 +50,7 @@ const LoginScreen: React.FC = () => {
               type="password"
               placeholder="password"
             />
-            <button>{loading ? "Logging..." : "Login"}</button>
+            <button>{loading ? <CircularProgress style={{color:"white"}} size={15} /> : "Login"}</button>
             <div style={{margin:10}}>
               </div>
             <GoogleLogin

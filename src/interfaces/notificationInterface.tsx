@@ -20,8 +20,13 @@ export interface notiInterface{
 
 export interface notificationInterface {
   loading: boolean;
-  notifications: notiInterface[],
+  notifications: notiInterface[];
   error?: string;
+  acceptInviteLoading:boolean,
+  invitationAccepted:boolean,
+  roomId?:string,
+  open:boolean,
+
 }
 
 export interface notificationActionInterface {

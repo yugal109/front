@@ -11,6 +11,7 @@ import { chatAction } from "../actions/chatAction";
 import { useHistory } from "react-router";
 import "../css/chatmodal.css";
 
+
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -92,13 +93,13 @@ const ChatModal: React.FC = () => {
                 required
               />
               {roomId ? (
-                <Button  onClick={handleGoToRoom}  variant="contained" color="primary">
+                <button className="but"  onClick={handleGoToRoom}  >
                   Go To Room
-                </Button>
+                </button>
               ) : (
-                <Button variant="contained" color="primary">
+                <button className="but">
                   {loading ? "Creating" : "Create"}
-                </Button>
+                </button>
               )}
             </form>
           </div>

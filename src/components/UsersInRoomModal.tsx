@@ -51,7 +51,7 @@ const  UsersInRoomModal:React.FC<any>=({roomId,token})=> {
   return (
     <>
 
-      <i onClick={handleOpen} className="fa fa-users"></i>
+      <i onClick={handleOpen}  className="fa fa-users"></i>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

@@ -34,7 +34,40 @@ const ProfileScreen: React.FC<any> = ({ match }) => {
     <main>
       <div className="profile-container">
         {loading ? (
-          "Loding..."
+                    <>
+                    <div className="profile-img">
+                      {/* {profileDetail.image} */}
+                      <img
+                        src="https://www.drodd.com/images14/white7.jpg"
+                        alt="user-img"
+                        className="user-img"
+                      />
+                    </div>
+                    <div className="user-container">
+                      <div className="user-info">
+                      <span className="user-username">............</span>
+                      </div>
+                      <div className="user-follows">
+                        <span>
+                          <strong>...</strong> posts
+                        </span>
+                        <span>
+                          <strong>...</strong> followers
+                        </span>
+                        <span>
+                          <strong>...</strong> following
+                        </span>
+                      </div>
+                      <div className="user-name">
+                        <span>
+                          <strong>...........</strong>
+                        </span>
+                      </div>
+                      <div className="user-bio">
+                        <span>403 forbidden</span>
+                      </div>
+                    </div>
+                  </>
         ) : (
           <>
             <div className="profile-img">

@@ -11,9 +11,10 @@ export const loginAction=(email:string,password:string,history:any)=>(dispatch:a
     })
     .then((response)=>{
         dispatch({type:SUCCESS,payload:response.data})
-        
+        dispatch({type:"LOGGED_IN"})
         history.push("/")
-        window.location.reload()
+      
+        // window.location.reload()
         
     }).catch((error)=>{
         
@@ -30,9 +31,12 @@ export const googleLoginAction=(tokenId:string,history:any)=>(dispatch:any)=>{
     })
     .then((response)=>{
         dispatch({type:SUCCESS,payload:response.data})
+        dispatch({type:"LOGGED_IN"})
         
         history.push("/")
-        window.location.reload()
+       
+        
+        // window.location.reload()
         
     }).catch((error)=>{
         
