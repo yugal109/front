@@ -11,7 +11,7 @@ export const invitationUsersAction =
       })
       .then((response) => {
         dispatch({ type: "FOLLOWERS_LIST_LOADED", payload: response.data });
-        // console.log(response.data)
+        console.log(response.data)
       })
       .catch((error) => {
         console.log(error);

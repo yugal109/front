@@ -14,7 +14,7 @@ const ProfileScreen: React.FC<any> = ({ match }) => {
   const { profileDetail, loading, error, statusloading, status }: any =
     useSelector<any>((state) => state.profileDetailState);
   const { token, id }: any = useSelector<any>((state) => state.userInfoState);
-
+console.log(status)
   useEffect(() => {
     if (id !== match.params.id) {
       dispatch(friendsStatusAction(match.params.id, token));
@@ -27,6 +27,10 @@ const ProfileScreen: React.FC<any> = ({ match }) => {
       dispatch(followRequestAction(token, id, match.params.id, "follow"));
     } else if (status === "pending") {
       dispatch(followRequestAction(token, id, match.params.id, "pending"));
+    }
+    else{
+      dispatch(followRequestAction(token, id, match.params.id, "unfollow"));
+
     }
   };
 

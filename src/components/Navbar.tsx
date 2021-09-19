@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,useMemo, useEffect } from "react";
 import { Avatar } from "@material-ui/core";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import ChatModal from "./ChatModal";
 import SearchModal from "./SearchModal";
 import "../css/Navbar.scss";
+
 interface userInfoDataStructure {
   id: string;
   fullname: string;
@@ -28,8 +29,8 @@ const Navbar: React.FC = () => {
   const [latestRoomId,setLatestRoomId]=useState<string>("")
 
   
-  useEffect(()=>{
-    console.log()
+  useMemo(()=>{
+
     if(data && data.token){
       axios.get("/latest_room",{
         headers:{
@@ -44,7 +45,7 @@ const Navbar: React.FC = () => {
       })
     }
     
-  })
+  },[data])
 
 
   const history = useHistory();

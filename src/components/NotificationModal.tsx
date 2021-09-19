@@ -90,12 +90,15 @@ const NotificationModal = () => {
                         key={noti._id}
                         notification={noti}
                         token={token}
+                        // handleClose={handleClose}
                       />
                     ) : (
                       <IndividualNotification
                         token={token}
                         notification={noti}
                         key={noti._id}
+                        handleClose={handleClose}
+
                       />
                     )}
                   </>

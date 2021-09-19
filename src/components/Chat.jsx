@@ -20,12 +20,16 @@ const Chat = ({ roomId }) => {
     socket = io.connect(URL);
     socket.emit("join", { id: userId, room: roomId });
 
-    dispatch(chatRoomMessage(token, roomId));
+    
 
     return () => {
       socket.disconnect();
     };
   }, [token, roomId, userId]);
+
+  useEffect(()=>{
+    dispatch(chatRoomMessage(token, roomId));
+  },[token,roomId,dispatch])
 
   const { messages, loading, error } = useSelector(
     (state) => state.chatRoomMessageState

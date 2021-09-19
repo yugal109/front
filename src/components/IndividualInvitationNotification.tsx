@@ -30,6 +30,7 @@ const IndividualInvitationNotification: React.FC<any> = ({
   }, [notification, dispatch]);
 
   const handleAccept = () => {
+    console.log(notification.roomId)
     dispatch(acceptInviteAction(token, notification._id, notification.roomId));
   };
 

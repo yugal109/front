@@ -56,7 +56,7 @@ export const chatRoomMessage = (token: string, roomId: string) => (dispatch:any)
       },
     })
     .then((response) => {
-      console.log(response.data);
+      console.log("The response is ",response.data);
       dispatch({type:"MESSAGE_LOADED",payload:response.data})
     })
     .catch((error) => {

@@ -125,5 +125,28 @@ export const followRequestAction =
           // console.log(error)
         });
     } else {
+
+      axios
+      .post(
+        "/remove_friend",
+        {
+          friend:acceptor,
+        },
+        {
+          headers: {
+            "x-auth-token": token,
+          },
+        }
+      )
+      .then((response) => {
+        dispatch({ type: "FRIEND_REQUEST_SENT", payload: response.data });
+      })
+      .catch((error) => {
+        dispatch({ type: "PROFILE_ERROR" });
+
+        // console.log(error)
+      });
+
+
     }
   };
