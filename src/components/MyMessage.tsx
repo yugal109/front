@@ -1,20 +1,43 @@
-import React from 'react'
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { reactionAction } from "../actions/reactionAction";
 
-const MyMessage:React.FC<any> = ({message}) => {
-    return (
-       
-        <li className="clearfix">
-        <div className="message-data align-right">
-          <span className="message-data-time">10:10 AM, Today</span> &nbsp;
-          &nbsp;
-          <span className="message-data-name">Priya</span>{" "}
-          <i className="fa fa-circle me"></i>
-        </div>
-        <div className="message other-message float-right">
-         {message.message}
-        </div>
-      </li>
-    )
-}
+import ReactionModal from "./ReactionModal";
+import "../css/reaction.css";
 
-export default MyMessage
+const MyMessage: React.FC<any> = ({ message }) => {
+  const { token }: any = useSelector<any>((state) => state.userInfoState);
+  const [length, setLength] = useState<number>(message.reactions.length);
+
+  const dispatch = useDispatch();
+  const handleReaction = () => {
+    dispatch(reactionAction(token, message._id, setLength, length));
+  };
+
+  return (
+    <div className="chat-msg owner">
+      <div className="chat-msg-profile">
+        <img className="chat-msg-img" src={message.user.image} alt="" />
+
+        <div className="chat-msg-date">
+          {new Date(message.createdAt).toDateString()}
+        </div>
+      </div>
+      <div className="chat-msg-content">
+        <div onDoubleClick={handleReaction} className="chat-msg-text">
+          {message.message}
+        </div>
+        {length !== 0 && (
+          <div style={{ display: "flex" }}>
+            <ReactionModal token={token} msgId={message._id} />
+            <small>{length}</small>
+          </div>
+        )}
+
+        <div style={{ marginTop: -5 }}>{/* <span >+</span> */}</div>
+      </div>
+    </div>
+  );
+};
+
+export default MyMessage;

@@ -1,3 +1,15 @@
+export interface userInterface{
+  accountType: string;
+  isAdmin: boolean | null;
+  image: string;
+  _id: string;
+  fullname: string;
+  username: string;
+  email: string;
+  password?: string;
+  friends?: [];
+
+}
 export interface notiInterface{
     status: string;
     _id: string;
@@ -26,6 +38,7 @@ export interface notificationInterface {
   invitationAccepted:boolean,
   roomId?:string,
   open:boolean,
+  notification_length:number
 
 }
 

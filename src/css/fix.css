@@ -1,0 +1,8 @@
+.MuiInputLabel-outlined {
+    transform: translate(12px, 14px) scale(1) !important;
+  }
+  
+  .MuiInputLabel-outlined.MuiInputLabel-shrink {
+    transform: translate(12px, -6px) scale(0.75) !important;
+  }
+  

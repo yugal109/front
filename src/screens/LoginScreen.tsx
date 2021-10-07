@@ -5,19 +5,14 @@ import GoogleLogin from "react-google-login";
 // import loginDispatch from "../actions/loginDispatch";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from "../components/Spinner";
+import { State } from "../store";
 import { CircularProgress } from "@material-ui/core";
 import "../css/Login.css";
 
-interface loginScreenInterface {
-  loginState: {
-    loading: boolean;
-    error?: string;
-  };
-}
 
 const LoginScreen: React.FC = () => {
-  const { loading, error }: any = useSelector<loginScreenInterface>(
-    (state) => state.loginState
+  const { loading, error } = useSelector(
+    (state:State) => state.loginState
   );
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");

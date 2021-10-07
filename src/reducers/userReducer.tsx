@@ -1,4 +1,3 @@
-import { StarRate } from "@material-ui/icons";
 import { START, SUCCESS, ERROR } from "../constants/userConstans";
 
 interface userInfoDataStructure {
@@ -9,6 +8,7 @@ interface userInfoDataStructure {
   email: string;
   image: string;
   password?: string;
+  token: string;
 }
 const userInfo: userInfoDataStructure =
   localStorage.getItem("userInfo") &&
@@ -17,9 +17,9 @@ const userInfo: userInfoDataStructure =
 export const userInfoReducer = (state = userInfo, action: any) => {
   switch (action.type) {
     case "LOGGED_IN":
-      const userData=JSON.parse(localStorage.getItem("userInfo")!)
-      console.log(userData)
-      return userData
+      const userData = JSON.parse(localStorage.getItem("userInfo")!);
+      console.log(userData);
+      return userData;
     default:
       return { ...state };
   }
@@ -84,15 +84,21 @@ export const registerReducer = (
   }
 };
 
-
-export const usersInRoomReducer=(state:any={loading:false,users:[{_id:""}],admin:{},error:""},action:any)=>{
-  switch(action.type){
+export const usersInRoomReducer = (
+  state: any = { loading: false, users: [{ _id: "" }], admin: {}, error: "" },
+  action: any
+) => {
+  switch (action.type) {
     case "USERS_IN_ROOM_START":
-      return {...state,loading:true}
-    case 'USERS_IN_ROOM_LOADED':
-      return {...state,admin:action.payload.admin,users:action.payload.users}
+      return { ...state, loading: true };
+    case "USERS_IN_ROOM_LOADED":
+      return {
+        ...state,
+        admin: action.payload.admin,
+        users: action.payload.users,
+        loading: false,
+      };
     default:
-      return {...state}
+      return { ...state };
   }
-
-}
+};

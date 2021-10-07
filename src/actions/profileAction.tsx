@@ -1,7 +1,9 @@
 import { info } from "console";
 import axios from "../url";
+import { profileActionInterface } from "../interfaces/profileInterface";
+import { Dispatch } from "redux";
 
-export const profileAction = (id: string, token: string) => (dispatch: any) => {
+export const profileAction = (id: string, token: string) => (dispatch:Dispatch<profileActionInterface>) => {
   dispatch({ type: "PROFILE_LOADING_START" });
 
   axios
@@ -28,7 +30,7 @@ export const profileUpdateAction =
     fullname: string,
     accountType: string
   ) =>
-  (dispatch: any) => {
+  (dispatch:Dispatch) => {
     dispatch({type:"PROFILE_EDIT_START"})
     
     axios
@@ -56,7 +58,7 @@ export const profileUpdateAction =
   };
 
 export const friendsStatusAction =
-  (id: string, token: string) => (dispatch: any) => {
+  (id: string, token: string) => (dispatch:Dispatch) => {
     dispatch({ type: "FRIENDS_STATUS_START" });
     axios
       .get(`/users/isfriend/${id}`, {
@@ -77,7 +79,7 @@ export const friendsStatusAction =
 
 export const followRequestAction =
   (token: string, requestor: string, acceptor: string, type: string) =>
-  (dispatch: any) => {
+  (dispatch:Dispatch) => {
     dispatch({ type: "FRIENDS_STATUS_START" });
 
     if (type === "follow") {

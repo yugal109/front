@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { profileInterface } from "../interfaces/profileInterface";
+import { finalProfileInterface } from "../interfaces/profileInterface";
 import {
   profileAction,
   friendsStatusAction,
@@ -7,14 +9,24 @@ import {
 } from "../actions/profileAction";
 import ProfileUpdateModal from "../components/ProfileUpdateModal";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { State } from "../store";
 import "../css/profile.css";
 
 const ProfileScreen: React.FC<any> = ({ match }) => {
   const dispatch = useDispatch();
-  const { profileDetail, loading, error, statusloading, status }: any =
-    useSelector<any>((state) => state.profileDetailState);
-  const { token, id }: any = useSelector<any>((state) => state.userInfoState);
-console.log(status)
+
+  const {
+    profileDetail,
+    loading,
+    error,
+    statusloading,
+    status,
+  }: profileInterface = useSelector((state: State) => state.profileDetailState);
+
+  const { token, id }: finalProfileInterface = useSelector(
+    (state: State) => state.userInfoState
+  );
+
   useEffect(() => {
     if (id !== match.params.id) {
       dispatch(friendsStatusAction(match.params.id, token));
@@ -27,10 +39,8 @@ console.log(status)
       dispatch(followRequestAction(token, id, match.params.id, "follow"));
     } else if (status === "pending") {
       dispatch(followRequestAction(token, id, match.params.id, "pending"));
-    }
-    else{
+    } else {
       dispatch(followRequestAction(token, id, match.params.id, "unfollow"));
-
     }
   };
 
@@ -38,40 +48,42 @@ console.log(status)
     <main>
       <div className="profile-container">
         {loading ? (
-                    <>
-                    <div className="profile-img">
-                      {/* {profileDetail.image} */}
-                      <img
-                        src="https://www.drodd.com/images14/white7.jpg"
-                        alt="user-img"
-                        className="user-img"
-                      />
-                    </div>
-                    <div className="user-container">
-                      <div className="user-info">
-                      <span className="user-username">............</span>
-                      </div>
-                      <div className="user-follows">
-                        <span>
-                          <strong>...</strong> posts
-                        </span>
-                        <span>
-                          <strong>...</strong> followers
-                        </span>
-                        <span>
-                          <strong>...</strong> following
-                        </span>
-                      </div>
-                      <div className="user-name">
-                        <span>
-                          <strong>...........</strong>
-                        </span>
-                      </div>
-                      <div className="user-bio">
-                        <span>403 forbidden</span>
-                      </div>
-                    </div>
-                  </>
+          <>
+            <div className="profile-img">
+              {/* {profileDetail.image} */}
+              <img
+                src="https://www.drodd.com/images14/white7.jpg"
+                alt="user-img"
+                className="user-img"
+              />
+            </div>
+            <div className="user-container">
+              <div className="user-info">
+                <span className="user-username">............</span>
+                <button style={{color:"white"}} className="profile-btn">Loding</button>
+                <button style={{color:"white"}} className="profile-btn">Loadi</button>
+              </div>
+              <div className="user-follows">
+                <span>
+                  <strong>...</strong> posts
+                </span>
+                <span>
+                  <strong>...</strong> followers
+                </span>
+                <span>
+                  <strong>...</strong> following
+                </span>
+              </div>
+              <div className="user-name">
+                <span>
+                  <strong>...........</strong>
+                </span>
+              </div>
+              {/* <div className="user-bio">
+                <span>403 forbidden</span>
+              </div> */}
+            </div>
+          </>
         ) : (
           <>
             <div className="profile-img">
@@ -124,9 +136,9 @@ console.log(status)
                   <strong>{profileDetail.fullname}</strong>
                 </span>
               </div>
-              <div className="user-bio">
+              {/* <div className="user-bio">
                 <span>403 forbidden</span>
-              </div>
+              </div> */}
             </div>
           </>
         )}

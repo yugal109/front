@@ -6,6 +6,7 @@ import Fade from "@material-ui/core/Fade";
 import { useDispatch, useSelector } from "react-redux";
 import { usersInRoomAction } from "../actions/userAction";
 import EachUserInRoom from "./EachUserInRoom";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { notiInterface } from "../interfaces/notificationInterface";
 
 import "../css/usersinroom.css";
@@ -49,7 +50,12 @@ const UsersInRoomModal: React.FC<any> = ({ roomId, token }) => {
 
   return (
     <>
-      <i onClick={handleOpen} className="fa fa-users"></i>
+      {/* <i onClick={handleOpen} className="fa fa-users"></i> */}
+      <span onClick={handleOpen}>
+        
+      <i className="fa fa-users"></i> 
+
+      </span>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -64,27 +70,43 @@ const UsersInRoomModal: React.FC<any> = ({ roomId, token }) => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Users Room</h2>
+            <h2 id="transition-modal-title">
+              Users Room
+              {loading && (
+                <CircularProgress style={{ color: "black",marginLeft:10 }} size={15} />
+              )}
+            </h2>
 
-            <div className="individual_users">
-              {admin.username}
-              <span
-                style={{
-                  margin: 5,
-                  paddingLeft: 5,
-                  paddingRight: 5,
-                  backgroundColor: "green",
-                  color: "white",
-                }}
-              >
-                Admin
-              </span>
-            </div>
-
-            {users &&
-              users.map((usr: notiInterface) => (
-                <EachUserInRoom key={usr._id} token={token} roomId={roomId} user={usr} handleClose={handleClose} />
-              ))}
+            {!loading && (
+              <>
+                <div className="individual_users">
+                  {admin.username}
+                  <span
+                    style={{
+                      margin: 5,
+                      paddingLeft: 5,
+                      paddingRight: 5,
+                      backgroundColor: "green",
+                      color: "white",
+                    }}
+                  >
+                    Admin
+                  </span>
+                </div>
+                <>
+                  {users &&
+                    users.map((usr: notiInterface) => (
+                      <EachUserInRoom
+                        key={usr._id}
+                        token={token}
+                        roomId={roomId}
+                        user={usr}
+                        handleClose={handleClose}
+                      />
+                    ))}
+                </>
+              </>
+            )} 
           </div>
         </Fade>
       </Modal>

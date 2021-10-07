@@ -9,8 +9,6 @@ import { CircularProgress } from "@material-ui/core";
 
 import "../css/Login.css";
 
-import { TextField } from "@material-ui/core";
-
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -109,6 +107,7 @@ const ProfileUpdateModal: React.FC<any> = ({ profileDetail, id, token }) => {
                 type="text"
                 placeholder="account type"
               />
+             
               <button className="but">
                 {editLoading ? (
                   <CircularProgress size={16} style={{ color: "white" }} />

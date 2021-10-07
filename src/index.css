@@ -1,11 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200&family=Montserrat:wght@100&family=Open+Sans+Condensed:wght@300&family=Padauk&display=swap');
-
+/* @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200&family=Montserrat:wght@100&family=Open+Sans+Condensed:wght@300&family=Padauk&display=swap'); */
+@import url("https://fonts.googleapis.com/css?family=Manrope:200,300,400,500,600&display=swap&subset=latin-ext");
 
 *{
   margin:0;
-  font-family: 'Dosis', sans-serif;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Manrope", sans-serif;
+
+  /* font-family: 'Montserrat', sans-serif;
   font-family: 'Open Sans Condensed', sans-serif;
-  font-family: 'Padauk', sans-serif;
+  font-family: 'Padauk', sans-serif; */
 
 }

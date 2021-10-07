@@ -84,12 +84,10 @@ const ChatModal: React.FC = () => {
             {/* {roomId} */}
             <h2 id="transition-modal-title">Create Room</h2>
             <form onSubmit={handleSubmit} className="body">
-              <TextField
+              <input
                 value={roomName}
                 onChange={(e) => setRoomName(e.target.value)}
-                style={{ marginTop: 10, marginBottom: 10 }}
-                id="standard-basic"
-                label="Roomname"
+                placeholder="Room Name"
                 required
               />
               {roomId ? (

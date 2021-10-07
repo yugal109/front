@@ -1,5 +1,5 @@
 import axios from "../url";
-
+import { Dispatch } from "redux";
 export const notificationAction = (token: string) => (dispatch: any) => {
   dispatch({ type: "NOTIFICATION_LOAD_START" });
 
@@ -88,3 +88,25 @@ export const acceptInviteAction =
         console.log(error);
       });
   };
+
+  export const notificationLengthAction =
+  (token: string) => (dispatch: Dispatch) => {
+
+    axios
+      .get(
+        `/requests`,
+        
+        {
+          headers: {
+            "x-auth-token": token,
+          },
+        }
+      )
+      .then((response) => {
+        // dispatch({ type: "NOTIFICATION_LENGTH",payload:response.data.roomId });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+

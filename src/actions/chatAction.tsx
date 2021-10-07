@@ -38,7 +38,7 @@ export const chatRoomsListAction = (token: string) => (dispatch: any) => {
       },
     })
     .then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       dispatch({ type: "CHAT_ROOM_LIST_LOADED", payload: response.data });
     })
     .catch((error) => {
@@ -56,7 +56,7 @@ export const chatRoomMessage = (token: string, roomId: string) => (dispatch:any)
       },
     })
     .then((response) => {
-      console.log("The response is ",response.data);
+      // console.log("The response is ",response.data);
       dispatch({type:"MESSAGE_LOADED",payload:response.data})
     })
     .catch((error) => {
@@ -66,7 +66,7 @@ export const chatRoomMessage = (token: string, roomId: string) => (dispatch:any)
 };
 
 export const chatRoomSendMessage=(msg:any)=>(dispatch:any)=>{
-  console.log(msg)
+  // console.log(msg)
   dispatch({ type: "MESSASGE_ONE_LOAD", payload: msg });
 
 

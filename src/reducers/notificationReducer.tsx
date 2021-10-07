@@ -1,6 +1,6 @@
 import {
   notificationInterface,
-  notificationActionInterface,
+  // notificationActionInterface,
 } from "../interfaces/notificationInterface";
 
 export const notificationReducer = (
@@ -10,7 +10,8 @@ export const notificationReducer = (
     acceptInviteLoading: false,
     invitationAccepted:false,
     error: "",
-    open:false
+    open:false,
+    notification_length:0
   },
   action: any
 ) => {
@@ -22,14 +23,15 @@ export const notificationReducer = (
     case "NOTIFICATION_LOAD_START":
       return { ...state, loading: true };
     case "NOTIFICATION_LOADED":
-      return { ...state, loading: false, notifications: action.payload };
+      return { ...state, loading: false, notifications: action.payload,notification_length:action.payload.length };
     case "CLEAR_NOTIFICATION_LIST":
       return { ...state, notifications: [] };
     case "NOTIFICATION_ACCEPT_INVITE_START":
       return { ...state, acceptInviteLoading: true, };
     case "NOTIFICATION_ACCEPTED":
-      console.log(action.payload.roomId)
       return {...state,acceptInviteLoading:false,invitationAccepted:true,roomId:action.payload}
+    case 'NOTIFICATIONS_LENGTH':
+      return {...state,notification_length:action.payload}
     default:
       return { ...state };
   }
@@ -65,16 +67,3 @@ export const notificationFollowRequestAccept = (
   }
 };
 
-// status: "",
-// _id: "",
-// requestType: "",
-// acceptor: "",
-// requestor: {
-//   accountType: "",
-//   isAdmin: null,
-//   image: "",
-//   _id: "",
-//   fullname: "",
-//   username: "",
-//   email: "",
-// },

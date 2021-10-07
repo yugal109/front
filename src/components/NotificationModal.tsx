@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
@@ -30,26 +30,20 @@ const NotificationModal = () => {
 
   const classes = useStyles();
 
-
   const { token }: any = useSelector<any>((state) => state.userInfoState);
-  const { loading,open, notifications, error }: any = useSelector<any>(
+  const { loading, open, notifications, error }: any = useSelector<any>(
     (state) => state.notificationsState
   );
 
   const handleOpen = () => {
-
     dispatch(notificationAction(token));
-    dispatch({type:"OPEN_NOTIFICATION_MODAL"})
-
+    dispatch({ type: "OPEN_NOTIFICATION_MODAL" });
   };
 
   const handleClose = () => {
-
     dispatch({ type: "CLEAR_NOTIFICATION_LIST" });
     dispatch({ type: "CLEAR_NOTIFICATION_CANCEL_LIST" });
-    dispatch({type:"CLOSE_NOTIFICATION_MODAL"})
-
-
+    dispatch({ type: "CLOSE_NOTIFICATION_MODAL" });
   };
 
   return (
@@ -74,37 +68,35 @@ const NotificationModal = () => {
               Notifications
               {loading && (
                 <CircularProgress
-                  style={{ color: "black", marginLeft: 10 }}
+                  style={{ color: "black", marginLeft: 10, marginTop: 7 }}
                   size={20}
                 />
               )}
             </h2>
-            <div style={{height:100,overflowY:"scroll"}}>
-            {loading === false && (
-              <>
-                {notifications.map((noti: notiInterface) => (
-                  <>
-                    {noti.requestType === "invitation" ? (
-                      
-                      <IndividualInvitationNotification
-                        key={noti._id}
-                        notification={noti}
-                        token={token}
-                        // handleClose={handleClose}
-                      />
-                    ) : (
-                      <IndividualNotification
-                        token={token}
-                        notification={noti}
-                        key={noti._id}
-                        handleClose={handleClose}
-
-                      />
-                    )}
-                  </>
-                ))}
-              </>
-            )}
+            <div style={{ height: 100, overflowY: "scroll" }}>
+              {loading === false && (
+                <>
+                  {notifications.map((noti: notiInterface) => (
+                    <>
+                      {noti.requestType === "invitation" ? (
+                        <IndividualInvitationNotification
+                          key={noti._id}
+                          notification={noti}
+                          token={token}
+                          // handleClose={handleClose}
+                        />
+                      ) : (
+                        <IndividualNotification
+                          token={token}
+                          notification={noti}
+                          key={noti._id}
+                          handleClose={handleClose}
+                        />
+                      )}
+                    </>
+                  ))}
+                </>
+              )}
             </div>
           </div>
         </Fade>

@@ -47,11 +47,12 @@ const InviteUsersModal: React.FC<any> = ({ userId, token, roomId }) => {
 
   return (
     <>
-      <i
-        className="fa fa-envelope"
-        style={{ marginLeft: 10, marginTop: 10 }}
-        onClick={handleOpen}
-      ></i>
+      <span onClick={handleOpen}>
+        <i
+          className="fa fa-envelope"
+          // style={{ marginLeft: 10, marginTop: 10 }}
+        ></i>
+      </span>
 
       <Modal
         aria-labelledby="transition-modal-title"

@@ -6,16 +6,19 @@ import RegisterScreen from "./screens/RegisterScreen";
 import LoginScreen from "./screens/LoginScreen";
 import ChatScreen from "./screens/ChatScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import PrimarySearchAppBar from "./components/AppBar";
+
 const App: React.FC = () => {
   return (
     <Router>
       <Navbar />
+      {/* <PrimarySearchAppBar/> */}
       <Switch>
         <Route path="/" component={HomeScreen} exact />
-        <Route path="/login" component={LoginScreen}/>
-    <Route path="/register" component={RegisterScreen}/>
-        <Route path="/chat/:id" component={ChatScreen}/>
-        <Route path="/profile/:id" component={ProfileScreen}/>
+        <Route path="/login" component={LoginScreen} />
+        <Route path="/register" component={RegisterScreen} />
+        <Route path="/chat/:id" component={ChatScreen} />
+        <Route path="/profile/:id" component={ProfileScreen} />
       </Switch>
     </Router>
   );

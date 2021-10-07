@@ -1,8 +1,8 @@
-import axios from "axios"
-import {URL} from "./urlActual"
+import axios from "axios";
+import { URL } from "./urlActual";
 
-const Axios =axios.create({
-    baseURL:URL
-})
+const Axios = axios.create({
+  baseURL: URL,
+});
 
-export default Axios
+export default Axios;

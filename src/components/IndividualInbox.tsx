@@ -9,21 +9,21 @@ const IndividualInbox:React.FC<any> = ({room,roomId}) => {
     }
     return (
        
-        <li 
-        onClick={handelClick}
-        className={(roomId==room._id)? "clearfix selected":"clearfix"}
-         key={room._id}>
-        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg" alt="avatar" />
-        <div className="about">
-          <div className="name">{room.name}</div>
-          <div className="status">
-            <i className="fa fa-circle online"></i> online
-           
-          </div>
-          {room.expire_at}
+      <div onClick={handelClick} className={room._id ===  roomId ? "msg online active" : "msg online"}>
+      <img
+        className="msg-profile"
+        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%281%29.png"
+        alt=""
+      />
+      {/* {JSON.stringify(room)} */}
+      <div className="msg-detail">
+        <div className="msg-username">{room.name}</div>
+        <div className="msg-content">
+          <span className="msg-message">What time was our meet</span>
+          <span className="msg-date">20m</span>
         </div>
-        
-      </li>
+      </div>
+    </div>
     )
 }
 
