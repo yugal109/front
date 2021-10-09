@@ -1,16 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { chatRoomsListAction } from "../actions/chatAction";
 import { chatIndividualList } from "../interfaces/chatRoomCreateInterface";
 import IndividualInbox from "./IndividualInbox";
-const InboxList: React.FC<any> = ({ roomId }) => {
-  const { token }: any = useSelector<any>((state) => state.userInfoState);
+import { io, Socket } from "socket.io-client";
+// import  from "@types"
+// import {URL} from "../urlActual"
+import { URL } from "../urlActual";
 
+let socket: Socket = io(URL + "/inbox");
+const InboxList: React.FC<any> = ({ roomId }) => {
+  const { token, id }: any = useSelector<any>((state) => state.userInfoState);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(chatRoomsListAction(token));
-  }, [token, dispatch]);
+    dispatch({ type: "CHAT_ROOM_LIST_START" });
+
+    socket.emit("join", { userId: id });
+
+    socket.on("inboxList", (data) => {
+      // console.log("The rooms are ",data)
+      dispatch({ type: "CHAT_ROOM_LIST_LOADED", payload: data });
+    });
+    return ()=>{
+      socket.off()
+    }
+  }, [id]);
+
+  useMemo(() => {
+   
+  }, []);
+
+  // useEffect(() => {
+  //   // dispatch(chatRoomsListAction(token));
+  // }, [token, dispatch]);
 
   const { loading, error, rooms }: any = useSelector<any>(
     (state) => state.chatRoomListState
@@ -19,6 +42,7 @@ const InboxList: React.FC<any> = ({ roomId }) => {
   return (
     <>
       <div className="conversation-area">
+        {loading && "Loading......."}
         {rooms &&
           rooms.map((room: chatIndividualList) => (
             <IndividualInbox key={room._id} room={room} roomId={roomId} />

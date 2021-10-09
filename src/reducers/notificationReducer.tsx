@@ -26,10 +26,10 @@ export const notificationReducer = (
       return { ...state, loading: false, notifications: action.payload,notification_length:action.payload.length };
     case "CLEAR_NOTIFICATION_LIST":
       return { ...state, notifications: [] };
-    case "NOTIFICATION_ACCEPT_INVITE_START":
-      return { ...state, acceptInviteLoading: true, };
-    case "NOTIFICATION_ACCEPTED":
-      return {...state,acceptInviteLoading:false,invitationAccepted:true,roomId:action.payload}
+    // case "NOTIFICATION_ACCEPT_INVITE_START":
+    //   return { ...state, acceptInviteLoading: true, };
+    // case "NOTIFICATION_ACCEPTED":
+    //   return {...state,acceptInviteLoading:false,invitationAccepted:true,roomId:action.payload}
     case 'NOTIFICATIONS_LENGTH':
       return {...state,notification_length:action.payload}
     default:

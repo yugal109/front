@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    height: 400,
+    height: 800,
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
@@ -73,7 +73,7 @@ const NotificationModal = () => {
                 />
               )}
             </h2>
-            <div style={{ height: 100, overflowY: "scroll" }}>
+            <div style={{ height: 500, overflowY: "scroll" }}>
               {loading === false && (
                 <>
                   {notifications.map((noti: notiInterface) => (

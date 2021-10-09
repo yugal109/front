@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UsersInRoomModal: React.FC<any> = ({ roomId, token }) => {
+const UsersInRoomModal: React.FC<any> = ({ roomId, token,userId }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
@@ -99,8 +99,10 @@ const UsersInRoomModal: React.FC<any> = ({ roomId, token }) => {
                       <EachUserInRoom
                         key={usr._id}
                         token={token}
+                        userId={userId}
                         roomId={roomId}
                         user={usr}
+                        admin={admin}
                         handleClose={handleClose}
                       />
                     ))}

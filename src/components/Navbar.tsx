@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import NotificationModal from "./NotificationModal";
@@ -6,7 +6,7 @@ import axios from "../url";
 import { useSelector, useDispatch } from "react-redux";
 import ChatModal from "./ChatModal";
 import SearchModal from "./SearchModal";
-import { io } from "socket.io-client";
+import SocketConnection from "../SocketConnection";
 import "../css/Navbar.scss";
 import { URL } from "../urlActual";
 
@@ -20,8 +20,8 @@ interface userInfoDataStructure {
   password?: string;
 }
 
+let socket:any;
 const Navbar: React.FC = () => {
-  let socket=io(URL + "/requests");
   const data: userInfoDataStructure | any = useSelector<userInfoDataStructure>(
     (state: any) => state.userInfoState
   );
@@ -34,21 +34,28 @@ const Navbar: React.FC = () => {
   const [latestRoomId, setLatestRoomId] = useState<string>("");
 
   useEffect(() => {
+    socket=SocketConnection("/requests");
     socket.emit("join", { userId: data.id });
+
+    socket.on("allRequests", (data: number) => {
+      console.log(data);
+      dispatch({ type: "NOTIFICATIONS_LENGTH", payload: data });
+    });
+
     return () => {
       socket.disconnect();
     };
   }, []);
 
-  useMemo(() => {
-    socket.on("allRequests", (data) => {
-      console.log(data)
-      dispatch({ type: "NOTIFICATIONS_LENGTH", payload: data });
-    });
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  // useEffect(() => {
+  //   socket.on("allRequests", (data: number) => {
+  //     console.log(data);
+  //     dispatch({ type: "NOTIFICATIONS_LENGTH", payload: data });
+  //   });
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   useMemo(() => {
     if (data && data.token) {

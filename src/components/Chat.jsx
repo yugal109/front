@@ -1,38 +1,61 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { chatRoomMessage, chatRoomSendMessage } from "../actions/chatAction";
 import MyMessage from "./MyMessage";
 import OtherMessage from "./OtherMessage";
 import UsersInRoomModal from "./UsersInRoomModal";
 import InviteUsersModal from "./InviteUsersModal";
-import { URL } from "../urlActual";
-import { io } from "socket.io-client";
+import SocketConnection from "../SocketConnection";
 import { CircularProgress } from "@material-ui/core";
-let socket = io.connect(URL);
-
+let socket;
 const Chat = ({ roomId }) => {
+  
   const { token, id: userId } = useSelector((state) => state.userInfoState);
 
   const [message, setMessage] = useState("");
 
   const dispatch = useDispatch();
 
-  useMemo(() => {
+  useEffect(() => {
+    socket=SocketConnection("/");
     socket.emit("join", { id: userId, room: roomId });
+
+
+    socket.on("messageFromServer", ({ msg }) => {
+      dispatch(chatRoomSendMessage(msg));
+    });
+    
     return () => {
       socket.disconnect();
     };
   }, [roomId, userId]);
 
+
   useMemo(() => {
     dispatch(chatRoomMessage(token, roomId));
   }, [token, roomId]);
 
-  useMemo(() => {
-    socket.on("messageFromServer", ({ msg }) => {
-      dispatch(chatRoomSendMessage(msg));
-    });
-  }, []);
+
+  // useMemo(() => {
+  //   socket.on("messageFromServer", ({ msg }) => {
+  //     dispatch(chatRoomSendMessage(msg));
+  //   });
+
+  //   // socket.removeListener("messageFromServer")
+    
+  //   // return ()=>{
+  //   //   socket.disconnect()
+  //   // }
+  // }, []);
+  // useEffect(() => {
+  //   socket.on("userRemoved", (data) => {
+  //     if (data.removed_user == userId) {
+  //       console.log("The data is data ", data);
+  //       // setOpen(true);
+
+  //     }
+  //   });
+  // }, []);
 
   const { messages, loading, error } = useSelector(
     (state) => state.chatRoomMessageState
@@ -40,9 +63,8 @@ const Chat = ({ roomId }) => {
 
   const handleMessageSend = (e) => {
     e.preventDefault();
-    setMessage("");
-
     socket.emit("messageSend", { message, userId, room: roomId });
+    setMessage("");
   };
 
   return (
@@ -51,8 +73,7 @@ const Chat = ({ roomId }) => {
         <div className="chat-area-header">
           <div className="chat-area-title">{roomId}</div>
           <div className="chat-area-group">
-            
-            {/* <img
+            <img
               className="chat-area-profile"
               src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%283%29+%281%29.png"
               alt=""
@@ -66,9 +87,9 @@ const Chat = ({ roomId }) => {
               className="chat-area-profile"
               src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%2812%29.png"
               alt=""
-            /> */}
+            />
 
-            <UsersInRoomModal roomId={roomId} token={token} />
+            <UsersInRoomModal roomId={roomId} token={token} userId={userId} />
             <InviteUsersModal userId={userId} roomId={roomId} token={token} />
           </div>
         </div>
@@ -147,7 +168,7 @@ const Chat = ({ roomId }) => {
             className="feather feather-paperclip"
           >
             <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />
-          </svg> 
+          </svg>
           <form onSubmit={handleMessageSend} style={{ width: "100%" }}>
             <input
               type="text"
@@ -155,6 +176,7 @@ const Chat = ({ roomId }) => {
               style={{ textAlign: "start" }}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Type something here..."
+              required
             />
             {/* <Button>Send</Button> */}
           </form>

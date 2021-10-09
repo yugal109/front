@@ -8,6 +8,8 @@ const EachUserInRoom: React.FC<any> = ({
   roomId,
   handleClose,
   token,
+  userId,
+  admin
 }) => {
   const [remove, setRemove] = useState<boolean>(false);
 
@@ -36,7 +38,14 @@ const EachUserInRoom: React.FC<any> = ({
   return (
     <div className="individual_users_list_user">
       {user.userId?.username}
+      {/* {1==2} */}
+      {/* <h1>{user.userId._id}</h1> */}
+      <h1>
+{/* {user.userId._id === userId ? "true" : "false"} */}
+</h1>
 
+      {admin._id === userId &&
+<>
       {/* {JSON.stringify(user.userId.username)} */}
       <Button variant="contained" onClick={handleClick}>
         {remove ? (
@@ -45,6 +54,8 @@ const EachUserInRoom: React.FC<any> = ({
           "Remove"
         )}
       </Button>
+      </>
+}
     </div>
   );
 };

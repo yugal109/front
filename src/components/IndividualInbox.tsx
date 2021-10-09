@@ -1,4 +1,5 @@
 import React from 'react'
+import { Avatar } from '@material-ui/core'
 import { useHistory } from 'react-router'
 
 const IndividualInbox:React.FC<any> = ({room,roomId}) => {
@@ -10,6 +11,7 @@ const IndividualInbox:React.FC<any> = ({room,roomId}) => {
     return (
        
       <div onClick={handelClick} className={room._id ===  roomId ? "msg online active" : "msg online"}>
+        {/* <Avatar alt="Y"/> */}
       <img
         className="msg-profile"
         src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%281%29.png"
@@ -19,7 +21,7 @@ const IndividualInbox:React.FC<any> = ({room,roomId}) => {
       <div className="msg-detail">
         <div className="msg-username">{room.name}</div>
         <div className="msg-content">
-          <span className="msg-message">What time was our meet</span>
+          <span className="msg-message">{room.lastMessage.message}</span>
           <span className="msg-date">20m</span>
         </div>
       </div>

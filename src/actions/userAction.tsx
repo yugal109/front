@@ -4,8 +4,7 @@ import { START, SUCCESS, ERROR } from "../constants/userConstans";
 export const loginAction =
   (email: string, password: string, history: any) => (dispatch: any) => {
     dispatch({ type: START });
-    console.log(email);
-
+    // console.log(email);
     axios
       .post("/login", {
         email,
@@ -14,7 +13,7 @@ export const loginAction =
       .then((response) => {
         dispatch({ type: SUCCESS, payload: response.data });
         dispatch({ type: "LOGGED_IN" });
-        history.push("/");
+        // history.push("/");
 
         // window.location.reload()
       })
@@ -37,7 +36,7 @@ export const googleLoginAction =
 
         history.push("/");
 
-        // window.location.reload()
+        window.location.reload()
       })
       .catch((error) => {
         dispatch({ type: ERROR });

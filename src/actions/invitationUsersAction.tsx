@@ -24,7 +24,8 @@ export const inviteAllUsers =
     axios
       .post(`/requests/invite`,{
           userList,
-          roomId
+          roomId,
+         
       },{
         headers:{
             'x-auth-token':token

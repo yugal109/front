@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Button, CircularProgress } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import "../css/notification.css"
-import { acceptInviteAction } from "../actions/notificationAction";
+import "../css/notification.css";
+import axios from "../url";
 
 const IndividualInvitationNotification: React.FC<any> = ({
   notification,
@@ -12,26 +12,42 @@ const IndividualInvitationNotification: React.FC<any> = ({
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { acceptInviteLoading, invitationAccepted, roomId }: any =
-    useSelector<any>((state) => state.notificationsState);
+  const [acceptInviteLoading, setAcceptInviteLoading] = useState<any>(false);
+  const [invitationAccepted, setInvitationAccepted] = useState<any>(false);
+  const [error,setError]=useState<string>("")
 
   useEffect(() => {
-    if (
-      notification &&
-      notification.requestType === "invitation" &&
-      notification.status === "accepted"
-    ) {
-      //  console.log(notification.roomId)
-      dispatch({
-        type: "NOTIFICATION_ACCEPTED",
-        payload: { roomId: notification.roomId },
-      });
+    if (notification && notification.status === "pending") {
+      setInvitationAccepted(false);
+    } else {
+      setInvitationAccepted(true);
     }
-  }, [notification, dispatch]);
+  }, [notification]);
 
   const handleAccept = () => {
-    console.log(notification.roomId)
-    dispatch(acceptInviteAction(token, notification._id, notification.roomId));
+    setAcceptInviteLoading(true);
+    axios
+      .post(
+        `/requests/accept/${notification._id}`,
+        {
+          acceptor: "ashfklsdjafsadfklj",
+          roomId: notification.roomId,
+        },
+        {
+          headers: {
+            "x-auth-token": token,
+          },
+        }
+      )
+      .then((response) => {
+        setAcceptInviteLoading(false);
+        setInvitationAccepted(true);
+      })
+      .catch((error) => {
+        setError("Something went wrong.")
+        setAcceptInviteLoading(false);
+      });
+    // dispatch(acceptInviteAction(token, notification._id, notification.roomId));
   };
 
   const goToRoom = () => {
@@ -45,19 +61,19 @@ const IndividualInvitationNotification: React.FC<any> = ({
         <Avatar alt="Remy Sharp" src={notification.requestor.image} />
 
         <div>
-          {notification.requestor.username} has requested you to join room-
-          {notification.roomName} .
-          {/* {roomId} */}
+          {notification.requestor.username} has invited you to join room-
+          {notification.roomName} .{/* {roomId} */}
+          {/* {error} */}
         </div>
 
         <div>
-          {acceptInviteLoading === true && invitationAccepted === false && (
+          {acceptInviteLoading === true && (
             <Button disabled style={{ marginLeft: 10 }} variant="contained">
               <CircularProgress style={{ color: "white" }} size={15} />
             </Button>
           )}
-          
-          {acceptInviteLoading === false && invitationAccepted === false && (
+
+          {invitationAccepted === false && acceptInviteLoading === false && (
             <Button
               onClick={handleAccept}
               style={{ marginLeft: 10 }}
@@ -66,17 +82,16 @@ const IndividualInvitationNotification: React.FC<any> = ({
               Accept
             </Button>
           )}
-          {acceptInviteLoading === false &&
-            invitationAccepted === true &&
-            roomId && (
-              <Button
-                style={{ marginLeft: 10 }}
-                variant="contained"
-                onClick={goToRoom}
-              >
-                Enter
-              </Button>
-            )}
+
+          {invitationAccepted === true && acceptInviteLoading === false && (
+            <Button
+              style={{ marginLeft: 10 }}
+              variant="contained"
+              onClick={goToRoom}
+            >
+              Enter
+            </Button>
+          )}
         </div>
       </div>
     </div>

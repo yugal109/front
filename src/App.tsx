@@ -6,7 +6,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import LoginScreen from "./screens/LoginScreen";
 import ChatScreen from "./screens/ChatScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-import PrimarySearchAppBar from "./components/AppBar";
+// import PrimarySearchAppBar from "./components/AppBar";
 
 const App: React.FC = () => {
   return (

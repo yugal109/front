@@ -7,6 +7,7 @@ import "../css/demochat.scss";
 const ChatScreen: React.FC<any> = ({ match }) => {
   return (
     <div>
+      
       {/* <div classNameName="cont clearfix">
         <InboxList  roomId={match.params.id} />
      
@@ -18,7 +19,7 @@ const ChatScreen: React.FC<any> = ({ match }) => {
         
       </div> */}
       <div className="app">
-        <div className="header">
+        {/* <div className="header">
           <div className="logo">
             <svg
               viewBox="0 0 513 513"
@@ -68,11 +69,11 @@ const ChatScreen: React.FC<any> = ({ match }) => {
               alt=""
             />
           </div>
-        </div>
+        </div> */}
         <div className="wrapper">
           <InboxList roomId={match.params.id} />
 
-          {match.params.id !== "undefined" && <Chat roomId={match.params.id} />}
+          {match.params.id !== "undefined" && <Chat roomId={match.params.id}  />}
 
           <div className="detail-area">
             <div className="detail-area-header">

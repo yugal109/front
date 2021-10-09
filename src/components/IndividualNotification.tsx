@@ -1,19 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { notiInterface } from "../interfaces/notificationInterface";
 import { Avatar } from "@material-ui/core";
 import { Button } from "@material-ui/core";
 import { CircularProgress } from "@material-ui/core";
 import { useHistory } from "react-router";
-import {
-  notificationFollowRequestCancelAction,
-  notificationFollowRequestAcceptAction,
-} from "../actions/notificationAction";
-import { useDispatch, useSelector } from "react-redux";
+import axios from "../url";
+import { useDispatch } from "react-redux";
 import "../css/notification.css";
 
-const IndividualNotification: React.FC<any> = ({ notification, token,handleClose }) => {
+const IndividualNotification: React.FC<any> = ({
+  notification,
+  token,
+  handleClose,
+}) => {
   const dispatch = useDispatch();
-  const history=useHistory()
+  const history = useHistory();
+
+
+  const [accepted, setAccepted] = useState<boolean>(false);
+  const [canceled, setCanceled] = useState<boolean>(false);
+  const [acceptLoading, setAcceptLoading] = useState<boolean>(false);
+  const [cancelLoading, setCancelLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (notification && notification.status === "pending") {
+      setAccepted(false);
+    } else {
+      setAccepted(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (
@@ -25,28 +40,55 @@ const IndividualNotification: React.FC<any> = ({ notification, token,handleClose
     }
   }, [notification, dispatch]);
 
-  const { cancel, canceledRequest }: any = useSelector<any>(
-    (state) => state.notificationFollowRequestCancelState
-  );
-
-  const { accepted, acceptLoading }: any = useSelector<any>(
-    (state) => state.notificationFollowRequestAcceptState
-  );
-
   const handelCancelRequest = () => {
-    dispatch(notificationFollowRequestCancelAction(notification._id, token));
+    setCancelLoading(true);
+    axios
+      .delete(`/requests/deleterequest/${notification._id}`, {
+        headers: {
+          "x-auth-token": token,
+        },
+      })
+      .then((response) => {
+        setCancelLoading(false);
+        // setAccepted(false)
+        setCanceled(true);
+       
+      })
+      .catch((error) => {
+        console.log(error);
+        setCancelLoading(false);
+      });
   };
 
   const handelAcceptFollowRequest = () => {
-    dispatch(
-      notificationFollowRequestAcceptAction(notification.requestor._id, token)
-    );
+    setAcceptLoading(true);
+    axios
+      .post(
+        `/requests/addfriend`,
+        {
+          requestor: notification.requestor._id,
+        },
+        {
+          headers: {
+            "x-auth-token": token,
+          },
+        }
+      )
+      .then((response) => {
+        setAcceptLoading(false);
+        setAccepted(true);
+
+      })
+      .catch((error) => {
+        setAcceptLoading(false);
+
+
+      });
   };
 
   const handlePushToProfile = () => {
-    handleClose()
-    history.push(`/profile/${notification.requestor._id}`)
-
+    handleClose();
+    history.push(`/profile/${notification.requestor._id}`);
   };
   return (
     <div className="notification_body">
@@ -57,76 +99,83 @@ const IndividualNotification: React.FC<any> = ({ notification, token,handleClose
           src={notification.requestor.image}
         />
         <div>
+   
           {notification.requestor.username} has requested to follow you.
         </div>
 
-        <div>
-          {acceptLoading && (
-            <Button variant="contained">
-              <CircularProgress style={{ color: "white" }} size={15} />
-            </Button>
-          )}
+        {accepted === true && (
 
-          {acceptLoading === false &&
-            accepted === false &&
-            canceledRequest === false &&
-            cancel === false && (
-              <Button onClick={handelAcceptFollowRequest} variant="contained">
-                Accept
-              </Button>
-            )}
-
-          {acceptLoading === false && accepted === true && (
+          <>
             <Button
-              onClick={handelAcceptFollowRequest}
+             
               disabled
               variant="contained"
             >
               Accepted
             </Button>
-          )}
+          </>
+        )}
 
-          {cancel && (
+        {accepted === false &&
+          acceptLoading === false &&
+          cancelLoading === false && canceled===false && (
             <>
+              <Button onClick={handelAcceptFollowRequest} variant="contained">
+                Accept
+              </Button>
+
               <Button
+                onClick={handelCancelRequest}
                 style={{ marginLeft: 10 }}
                 variant="contained"
                 color="primary"
               >
-                <CircularProgress style={{ color: "white" }} size={15} />
+                Cancel
               </Button>
             </>
           )}
 
-          {canceledRequest === false &&
-            cancel === false &&
-            acceptLoading === false &&
-            accepted === false && (
-              <>
-                <Button
-                  onClick={handelCancelRequest}
-                  style={{ marginLeft: 10 }}
-                  variant="contained"
-                  color="primary"
-                >
-                  Cancel
-                </Button>
-              </>
-            )}
+        {acceptLoading === true && (
+          <>
+            <Button disabled variant="contained">
+              <CircularProgress style={{ color: "white" }} size={15} />
+            </Button>
+            <Button
+              style={{ marginLeft: 10 }}
+              disabled
+              variant="contained"
+              color="primary"
+            >
+              Cancel
+            </Button>
+          </>
+        )}
 
-          {canceledRequest === true && cancel === false && (
-            <>
-              <Button
-                disabled
-                style={{ marginLeft: 10 }}
-                variant="contained"
-                color="primary"
-              >
-                Canceled
-              </Button>
-            </>
-          )}
-        </div>
+        {cancelLoading === true && (
+          <>
+            <Button disabled variant="contained">
+              Accept
+            </Button>
+            <Button
+              style={{ marginLeft: 10 }}
+              variant="contained"
+              color="primary"
+            >
+              <CircularProgress style={{ color: "white" }} size={15} />
+            </Button>
+          </>
+        )}
+
+        {canceled && (
+          <Button
+            style={{ marginLeft: 10 }}
+            variant="contained"
+            disabled
+            color="primary"
+          >
+            Canceled
+          </Button>
+        )}
       </div>
     </div>
   );

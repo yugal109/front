@@ -64,30 +64,30 @@ export const notificationFollowRequestAcceptAction =
       });
   };
 
-export const acceptInviteAction =
-  (token: string, id: string, roomId: string) => (dispatch: any) => {
-    dispatch({ type: "NOTIFICATION_ACCEPT_INVITE_START" });
-    axios
-      .post(
-        `/requests/accept/${id}`,
-        {
-          acceptor: "ashfklsdjafsadfklj",
-          roomId,
-        },
-        {
-          headers: {
-            "x-auth-token": token,
-          },
-        }
-      )
-      .then((response) => {
+// export const acceptInviteAction =
+//   (token: string, id: string, roomId: string) => (dispatch: any) => {
+//     // dispatch({ type: "NOTIFICATION_ACCEPT_INVITE_START" });
+//     axios
+//       .post(
+//         `/requests/accept/${id}`,
+//         {
+//           acceptor: "ashfklsdjafsadfklj",
+//           roomId,
+//         },
+//         {
+//           headers: {
+//             "x-auth-token": token,
+//           },
+//         }
+//       )
+//       .then((response) => {
         
-        dispatch({ type: "NOTIFICATION_ACCEPTED",payload:response.data.roomId });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+//         dispatch({ type: "NOTIFICATION_ACCEPTED",payload:response.data.roomId });
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//   };
 
   export const notificationLengthAction =
   (token: string) => (dispatch: Dispatch) => {
