@@ -1,69 +1,80 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { chatRoomMessage, chatRoomSendMessage } from "../actions/chatAction";
+import { useHistory } from "react-router";
 import MyMessage from "./MyMessage";
 import OtherMessage from "./OtherMessage";
 import UsersInRoomModal from "./UsersInRoomModal";
 import InviteUsersModal from "./InviteUsersModal";
 import SocketConnection from "../SocketConnection";
 import { CircularProgress } from "@material-ui/core";
+import { useContext } from "react";
+import { ChatInboxSocketContext } from "./WholeContext";
+
+import UserRemovedModal from "../components/UserRemovedModal";
+
 let socket;
 const Chat = ({ roomId }) => {
-  
+  const history=useHistory()
+  const [open, setOpen] = React.useState(false);
+
   const { token, id: userId } = useSelector((state) => state.userInfoState);
-
-  const [message, setMessage] = useState("");
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    socket=SocketConnection("/");
-    socket.emit("join", { id: userId, room: roomId });
-
-
-    socket.on("messageFromServer", ({ msg }) => {
-      dispatch(chatRoomSendMessage(msg));
-    });
-    
-    return () => {
-      socket.disconnect();
-    };
-  }, [roomId, userId]);
-
-
-  useMemo(() => {
-    dispatch(chatRoomMessage(token, roomId));
-  }, [token, roomId]);
-
-
-  // useMemo(() => {
-  //   socket.on("messageFromServer", ({ msg }) => {
-  //     dispatch(chatRoomSendMessage(msg));
-  //   });
-
-  //   // socket.removeListener("messageFromServer")
-    
-  //   // return ()=>{
-  //   //   socket.disconnect()
-  //   // }
-  // }, []);
-  // useEffect(() => {
-  //   socket.on("userRemoved", (data) => {
-  //     if (data.removed_user == userId) {
-  //       console.log("The data is data ", data);
-  //       // setOpen(true);
-
-  //     }
-  //   });
-  // }, []);
 
   const { messages, loading, error } = useSelector(
     (state) => state.chatRoomMessageState
   );
 
+  const [message, setMessage] = useState("");
+  // const []
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    socket = SocketConnection("/");
+    if (open === false) {
+      socket.emit("join", { id: userId, room: roomId });
+
+      socket.on("messageFromServer", ({ msg }) => {
+        dispatch(chatRoomSendMessage(msg));
+      });
+    }
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [roomId, userId]);
+
+  useEffect(() => {
+    socket.on("userRemoved", (data) => {
+      if (data && data?.removed_user == userId) {
+        setOpen(true);
+        socket.off()
+        // setTimeout(()=>{
+        //   history.push("/")
+        // },2000)
+        
+      } else {
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    socket &&
+      socket.on("reactionInMessage", (data) => {
+        // let msg = messages.find((e) => e._id === data.msgId);
+        // dispatch();
+      });
+  }, [messages]);
+
+  useMemo(() => {
+    dispatch(chatRoomMessage(token, roomId));
+  }, [token, roomId]);
+
   const handleMessageSend = (e) => {
     e.preventDefault();
+
     socket.emit("messageSend", { message, userId, room: roomId });
+
     setMessage("");
   };
 
@@ -72,6 +83,7 @@ const Chat = ({ roomId }) => {
       <div className="chat-area">
         <div className="chat-area-header">
           <div className="chat-area-title">{roomId}</div>
+          
           <div className="chat-area-group">
             <img
               className="chat-area-profile"
@@ -88,7 +100,7 @@ const Chat = ({ roomId }) => {
               src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3364143/download+%2812%29.png"
               alt=""
             />
-
+            <UserRemovedModal open={open} setOpen={setOpen} />
             <UsersInRoomModal roomId={roomId} token={token} userId={userId} />
             <InviteUsersModal userId={userId} roomId={roomId} token={token} />
           </div>
@@ -106,9 +118,19 @@ const Chat = ({ roomId }) => {
                 messages.map((message) => (
                   <>
                     {message.user._id === userId ? (
-                      <MyMessage key={message._id} message={message} />
+                      <>
+                        <MyMessage
+                          socket={socket}
+                          key={message._id}
+                          message={message}
+                        />
+                      </>
                     ) : (
-                      <OtherMessage message={message} key={message._id} />
+                      <OtherMessage
+                        socket={socket}
+                        message={message}
+                        key={message._id}
+                      />
                     )}
                   </>
                 ))}

@@ -1,17 +1,19 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { reactionAction } from "../actions/reactionAction";
-
+import React, { useState, useEffect } from "react";
+import {  useSelector } from "react-redux";
 import ReactionModal from "./ReactionModal";
 import "../css/reaction.css";
 
-const MyMessage: React.FC<any> = ({ message }) => {
-  const { token }: any = useSelector<any>((state) => state.userInfoState);
+const MyMessage: React.FC<any> = ({ message, socket }) => {
+
+  const { token, id: userId }: any = useSelector<any>(
+    (state) => state.userInfoState
+  );
   const [length, setLength] = useState<number>(message.reactions.length);
 
-  const dispatch = useDispatch();
+
+
   const handleReaction = () => {
-    dispatch(reactionAction(token, message._id, setLength, length));
+    socket.emit("likeMessage", { messageId: message._id, userId: userId,room:message.chatRoom });
   };
 
   return (

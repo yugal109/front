@@ -2,34 +2,43 @@ import React, { useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { chatRoomsListAction } from "../actions/chatAction";
 import { chatIndividualList } from "../interfaces/chatRoomCreateInterface";
+import { Socket } from "socket.io-client";
 import IndividualInbox from "./IndividualInbox";
-import { io, Socket } from "socket.io-client";
-// import  from "@types"
-// import {URL} from "../urlActual"
-import { URL } from "../urlActual";
+import SocketConnection from "../SocketConnection"
 
-let socket: Socket = io(URL + "/inbox");
+let InboxSocket:Socket;
 const InboxList: React.FC<any> = ({ roomId }) => {
   const { token, id }: any = useSelector<any>((state) => state.userInfoState);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch({ type: "CHAT_ROOM_LIST_START" });
+   InboxSocket=SocketConnection("/inbox")
 
-    socket.emit("join", { userId: id });
-
-    socket.on("inboxList", (data) => {
-      // console.log("The rooms are ",data)
-      dispatch({ type: "CHAT_ROOM_LIST_LOADED", payload: data });
-    });
-    return ()=>{
-      socket.off()
-    }
-  }, [id]);
-
-  useMemo(() => {
+   InboxSocket.emit("join", { userId: id });
    
-  }, []);
+   InboxSocket.on("inboxList", (data) => {
+    // console.log("The rooms are ",data)
+    dispatch({ type: "CHAT_ROOM_LIST_LOADED", payload: data });
+  });
+
+
+    return ()=>{
+     InboxSocket.off()
+    }
+  }, [id,roomId]);
+
+  // useEffect(()=>{
+  //   InboxSocket.on("inboxList", (data) => {
+  //     // console.log("The rooms are ",data)
+  //     dispatch({ type: "CHAT_ROOM_LIST_LOADED", payload: data });
+  //   });
+
+  // },[roomId])
+
+  // useMemo(() => {
+   
+  // }, [id]);
 
   // useEffect(() => {
   //   // dispatch(chatRoomsListAction(token));

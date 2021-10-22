@@ -1,9 +1,16 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { Avatar } from '@material-ui/core'
+import {io} from "socket.io-client"
+import {URL} from "../urlActual"
 import { useHistory } from 'react-router'
-
+import SocketConnection from '../SocketConnection'
+let socket;
 const IndividualInbox:React.FC<any> = ({room,roomId}) => {
     const history=useHistory()
+
+    // useEffect(()=>{
+    //   socket=SocketConnection("/")
+    // },[URL])
 
     const handelClick=()=>{
         history.push(`/chat/${room._id}`)
